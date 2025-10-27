@@ -23,7 +23,6 @@ def test_create_trip_without_db():
     )
     
     trip_id = manager.create_trip(trip)
-    # Updated to match current TripManager behavior (UUID when no DB)
     assert isinstance(trip_id, str)
     assert trip_id  # non-empty
     assert trip.trip_id == trip_id

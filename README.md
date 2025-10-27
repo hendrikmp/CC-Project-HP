@@ -17,16 +17,28 @@ The links of the project milestones and their respective documentation can be ac
 
 ### [Milestone 1 – Practice Repository and Project Definition](docs/milestone1.md)
 
+### [Milestone 2 – Continuous Integration](docs/milestone2.md)
+
 
 
 
 ## Repository Structure
 ```
-TapasMap-Granada/ 
+BlaBlaTrip/ 
+├── .github/  
+|   └── worksflows
+|       └── python-app.yml
 ├── docs/  
-    └── milestone1.md 
+|   └── milestone1.md 
+├── src/  
+|   ├── business logic ...
+|   └── ...
+├── test/  
+|   ├── tests ...
+|   └── ...
 ├── README.md  
 ├── LICENSE  
+├── Makefile  
 └── .gitignore  
 ```
 
