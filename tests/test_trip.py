@@ -1,4 +1,5 @@
 import pytest
+from pydantic import ValidationError
 from datetime import datetime, timedelta
 from src.trip import Trip
 
@@ -33,7 +34,7 @@ def test_trip_negative_seats_raises_error():
     start = datetime(2025, 6, 1, 10, 0)
     end = datetime(2025, 6, 1, 18, 0)
     
-    with pytest.raises(ValueError, match="free_seats must be positive"):
+    with pytest.raises(ValidationError, match="free_seats must be positive"):
         Trip(
             driver_id="driver123",
             driver_car="Tesla Model 3",
@@ -51,7 +52,7 @@ def test_trip_zero_seats_raises_error():
     start = datetime(2025, 6, 1, 10, 0)
     end = datetime(2025, 6, 1, 18, 0)
     
-    with pytest.raises(ValueError, match="free_seats must be positive"):
+    with pytest.raises(ValidationError, match="free_seats must be positive"):
         Trip(
             driver_id="driver123",
             driver_car="Tesla Model 3",
@@ -69,7 +70,7 @@ def test_trip_passengers_exceed_seats_raises_error():
     start = datetime(2025, 6, 1, 10, 0)
     end = datetime(2025, 6, 1, 18, 0)
     
-    with pytest.raises(ValueError, match="exceeds free seats"):
+    with pytest.raises(ValidationError, match="exceeds free seats"):
         Trip(
             driver_id="driver123",
             driver_car="Tesla Model 3",
@@ -88,7 +89,7 @@ def test_trip_invalid_datetime_raises_error():
     start = datetime(2025, 6, 1, 18, 0)
     end = datetime(2025, 6, 1, 10, 0)
     
-    with pytest.raises(ValueError, match="return_datetime must be after start_datetime"):
+    with pytest.raises(ValidationError, match="return_datetime must be after start_datetime"):
         Trip(
             driver_id="driver123",
             driver_car="Tesla Model 3",
@@ -106,7 +107,7 @@ def test_trip_negative_cost_raises_error():
     start = datetime(2025, 6, 1, 10, 0)
     end = datetime(2025, 6, 1, 18, 0)
     
-    with pytest.raises(ValueError, match="cost_per_passenger cannot be negative"):
+    with pytest.raises(ValidationError, match="cost_per_passenger cannot be negative"):
         Trip(
             driver_id="driver123",
             driver_car="Tesla Model 3",
