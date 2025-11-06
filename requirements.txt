@@ -1,0 +1,6 @@
+flask-openapi3
+pydantic
+pymongo
+pytest
+pytest-mock
+flake8
