@@ -1,19 +1,27 @@
 from typing import List, Optional
 from uuid import uuid4
 from pymongo.collection import Collection
+from pymongo import MongoClient
 from src.trip import Trip
 
 
 class TripManager:
     """Manages trip creation and storage operations."""
 
-    def __init__(self, db_collection: Optional[Collection] = None):
+    def __init__(self, db_collection: Optional[Collection] = None, mongo_uri: str = None):
         """Initialize TripManager.
         
         Args:
             db_collection: MongoDB collection for storing trips (optional).
+            mongo_uri: URI for connecting to MongoDB (optional).
         """
-        self.db_collection = db_collection
+        if db_collection is not None:
+            self.db_collection = db_collection
+        elif mongo_uri:
+            client = MongoClient(mongo_uri)
+            self.db_collection = client.get_database().get_collection("trips")
+        else:
+            self.db_collection = None
 
     def create_trip(self, trip: Trip) -> str:
         """Create a new trip and store it in the database.
