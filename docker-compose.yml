@@ -8,7 +8,7 @@ services:
       - .:/app:ro # pushes changes to the container without the need to restart docker compose
     environment:
       - FLASK_ENV=development
-      - MONGO_URI=mongodb://admin:1234@trips-db:27017/trips_db?authSource=admin
+      - MONGO_URI=mongodb://trips-db:27017/trips_db
     depends_on:
       - trips-db
 
@@ -16,8 +16,8 @@ services:
     image: mongo:latest
     container_name: trips-db
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=1234
+    #   - MONGO_INITDB_ROOT_USERNAME=admin
+    #   - MONGO_INITDB_ROOT_PASSWORD=1234
       - MONGO_INITDB_DATABASE=trips_db
     ports:
       - "27017:27017"
