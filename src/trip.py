@@ -15,7 +15,7 @@ class Trip(BaseModel):
     trip_id: Optional[str] = Field(default=None)
     driver_id: str
     driver_car: str
-    free_seats: int
+    capacity: int
     destination: str
     pickup_location: str
     start_datetime: datetime
@@ -23,10 +23,11 @@ class Trip(BaseModel):
     cost_per_passenger: float
     passengers: List[str] = Field(default_factory=list)
 
-    @field_validator("free_seats")
-    def free_seats_must_be_positive(cls, v):
+    @field_validator("capacity")
+    def capacity_must_be_positive(cls, v):
+        """Validate that capacity is a positive integer."""
         if v <= 0:
-            raise ValueError("free_seats must be positive")
+            raise ValueError("capacity must be positive")
         return v
 
     @field_validator("cost_per_passenger")
@@ -40,9 +41,9 @@ class Trip(BaseModel):
         if self.return_datetime <= self.start_datetime:
             raise ValueError("return_datetime must be after start_datetime")
 
-        if len(self.passengers) > self.free_seats:
+        if len(self.passengers) > self.capacity:
             raise ValueError(
-                f"Number of passengers ({len(self.passengers)}) exceeds free seats ({self.free_seats})"
+                f"Number of passengers ({len(self.passengers)}) exceeds capacity ({self.capacity})"
             )
 
         return self
@@ -55,7 +56,7 @@ class Trip(BaseModel):
         if passenger_id in self.passengers:
             raise ValueError(f"Passenger {passenger_id} is already in this trip")
 
-        if len(self.passengers) >= self.free_seats:
+        if len(self.passengers) >= self.capacity:
             return False
 
         self.passengers.append(passenger_id)
@@ -70,7 +71,7 @@ class Trip(BaseModel):
             "trip_id": self.trip_id,
             "driver_id": self.driver_id,
             "driver_car": self.driver_car,
-            "free_seats": self.free_seats,
+            "capacity": self.capacity,
             "destination": self.destination,
             "pickup_location": self.pickup_location,
             "start_datetime": self.start_datetime,

@@ -5,6 +5,7 @@ import os
 from pymongo import MongoClient
 from src.trip_manager import TripManager
 
+
 # Initialize Flask app with OpenAPI
 app = OpenAPI(__name__)
 
@@ -12,11 +13,12 @@ app = OpenAPI(__name__)
 app.register_api(trip_api)
 
 # Initialize MongoDB client and inject into TripManager
-mongo_uri = os.getenv("MONGO_URI", "mongodb://admin:1234@localhost:27017/trips_db?authSource=admin")
+mongo_uri = os.getenv("MONGO_URI", "mongodb://trips-db:27017/trips_db")
 mongo_client = MongoClient(mongo_uri)
 db_collection = mongo_client.get_database().get_collection("trips")
 
 trip_manager = TripManager(db_collection=db_collection)
+app.config["trip_manager"] = trip_manager
 
 # Define a basic health check route
 @app.get("/health", summary="Health Check")

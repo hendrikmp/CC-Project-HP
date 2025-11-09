@@ -22,7 +22,7 @@ def test_create_valid_trip():
     
     assert trip.driver_id == "driver123"
     assert trip.driver_car == "Tesla Model 3"
-    assert trip.free_seats == 3
+    assert trip.capacity == 3
     assert trip.destination == "Lake Tahoe"
     assert trip.pickup_location == "San Francisco Downtown"
     assert trip.cost_per_passenger == 25.50

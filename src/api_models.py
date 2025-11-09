@@ -10,7 +10,7 @@ class TripBody(BaseModel):
     """
     driver_id: str
     driver_car: str
-    free_seats: int = Field(..., gt=0, description="Number of available seats, must be positive.")
+    capacity: int = Field(..., gt=0, description="Maximum number of passengers, must be positive.")
     destination: str
     pickup_location: str
     start_datetime: datetime
@@ -47,11 +47,6 @@ class TripRequestResponse(TripRequestBody):
 
 # --- Generic Models ---
 
-class SuccessResponse(BaseModel):
-    """Generic success response model."""
-    message: str
-
-class ErrorResponse(BaseModel):
-    """Generic error response model."""
-    code: int
-    message: str
+class JoinTripBody(BaseModel):
+    """Request body for joining a trip as a passenger."""
+    passenger_id: str = Field(..., description="The ID of the passenger joining the trip.")
