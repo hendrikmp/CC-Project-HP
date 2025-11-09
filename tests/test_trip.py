@@ -12,7 +12,7 @@ def test_create_valid_trip():
     trip = Trip(
         driver_id="driver123",
         driver_car="Tesla Model 3",
-        free_seats=3,
+        capacity=3,
         destination="Lake Tahoe",
         pickup_location="San Francisco Downtown",
         start_datetime=start,
@@ -30,15 +30,15 @@ def test_create_valid_trip():
 
 
 def test_trip_negative_seats_raises_error():
-    """Test that negative free_seats raises ValueError."""
+    """Test that negative capacity raises ValueError."""
     start = datetime(2025, 6, 1, 10, 0)
     end = datetime(2025, 6, 1, 18, 0)
     
-    with pytest.raises(ValidationError, match="free_seats must be positive"):
+    with pytest.raises(ValidationError, match="capacity must be positive"):
         Trip(
             driver_id="driver123",
             driver_car="Tesla Model 3",
-            free_seats=-1,
+            capacity=-1,
             destination="Lake Tahoe",
             pickup_location="San Francisco",
             start_datetime=start,
@@ -48,15 +48,15 @@ def test_trip_negative_seats_raises_error():
 
 
 def test_trip_zero_seats_raises_error():
-    """Test that zero free_seats raises ValueError."""
+    """Test that zero capacity raises ValueError."""
     start = datetime(2025, 6, 1, 10, 0)
     end = datetime(2025, 6, 1, 18, 0)
     
-    with pytest.raises(ValidationError, match="free_seats must be positive"):
+    with pytest.raises(ValidationError, match="capacity must be positive"):
         Trip(
             driver_id="driver123",
             driver_car="Tesla Model 3",
-            free_seats=0,
+            capacity=0,
             destination="Lake Tahoe",
             pickup_location="San Francisco",
             start_datetime=start,
@@ -66,15 +66,15 @@ def test_trip_zero_seats_raises_error():
 
 
 def test_trip_passengers_exceed_seats_raises_error():
-    """Test that passengers list exceeding free_seats raises ValueError."""
+    """Test that passengers list exceeding capacity raises ValueError."""
     start = datetime(2025, 6, 1, 10, 0)
     end = datetime(2025, 6, 1, 18, 0)
     
-    with pytest.raises(ValidationError, match="exceeds free seats"):
+    with pytest.raises(ValidationError, match="exceeds capacity"):
         Trip(
             driver_id="driver123",
             driver_car="Tesla Model 3",
-            free_seats=2,
+            capacity=2,
             destination="Lake Tahoe",
             pickup_location="San Francisco",
             start_datetime=start,
@@ -93,7 +93,7 @@ def test_trip_invalid_datetime_raises_error():
         Trip(
             driver_id="driver123",
             driver_car="Tesla Model 3",
-            free_seats=3,
+            capacity=3,
             destination="Lake Tahoe",
             pickup_location="San Francisco",
             start_datetime=start,
@@ -111,7 +111,7 @@ def test_trip_negative_cost_raises_error():
         Trip(
             driver_id="driver123",
             driver_car="Tesla Model 3",
-            free_seats=3,
+            capacity=3,
             destination="Lake Tahoe",
             pickup_location="San Francisco",
             start_datetime=start,
@@ -128,7 +128,7 @@ def test_add_passenger_success():
     trip = Trip(
         driver_id="driver123",
         driver_car="Tesla Model 3",
-        free_seats=3,
+        capacity=3,
         destination="Lake Tahoe",
         pickup_location="San Francisco",
         start_datetime=start,
@@ -150,7 +150,7 @@ def test_add_passenger_when_full():
     trip = Trip(
         driver_id="driver123",
         driver_car="Tesla Model 3",
-        free_seats=1,
+        capacity=1,
         destination="Lake Tahoe",
         pickup_location="San Francisco",
         start_datetime=start,
@@ -172,7 +172,7 @@ def test_add_duplicate_passenger_raises_error():
     trip = Trip(
         driver_id="driver123",
         driver_car="Tesla Model 3",
-        free_seats=3,
+        capacity=3,
         destination="Lake Tahoe",
         pickup_location="San Francisco",
         start_datetime=start,
@@ -194,7 +194,7 @@ def test_trip_to_dict():
     trip = Trip(
         driver_id="driver123",
         driver_car="Tesla Model 3",
-        free_seats=3,
+        capacity=3,
         destination="Lake Tahoe",
         pickup_location="San Francisco",
         start_datetime=start,
@@ -207,5 +207,5 @@ def test_trip_to_dict():
     
     assert trip_dict["trip_id"] == "trip456"
     assert trip_dict["driver_id"] == "driver123"
-    assert trip_dict["free_seats"] == 3
+    assert trip_dict["capacity"] == 3
     assert trip_dict["passengers"] == []
