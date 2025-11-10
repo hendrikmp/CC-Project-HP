@@ -18,39 +18,39 @@ def api_service():
     
     api_url = "http://localhost:5001"
     
-    # try:
-    # Start services
-    subprocess.run(
-        ["docker-compose", "-f", docker_compose_path, "up", "-d"],
-        check=True,
-        capture_output=True
-    )
-    
-    # Wait for the API to be healthy
-    health_url = f"{api_url}/health"
-    retries = 15
-    delay = 2  # seconds
-    for i in range(retries):
-        try:
-            response = requests.get(health_url)
-            if response.status_code == 200:
-                print("API is healthy.")
-                break
-        except ConnectionError:
-            print(f"Waiting for API to be healthy... (attempt {i+1}/{retries})")
-            time.sleep(delay)
-    else:
-        pytest.fail("API did not become healthy in time.")
+    try:
+        # Start services
+        subprocess.run(
+            ["docker-compose", "-f", docker_compose_path, "up", "-d"],
+            check=True,
+            capture_output=True
+        )
         
-    yield api_url
+        # Wait for the API to be healthy
+        health_url = f"{api_url}/health"
+        retries = 15
+        delay = 2  # seconds
+        for i in range(retries):
+            try:
+                response = requests.get(health_url)
+                if response.status_code == 200:
+                    print("API is healthy.")
+                    break
+            except ConnectionError:
+                print(f"Waiting for API to be healthy... (attempt {i+1}/{retries})")
+                time.sleep(delay)
+        else:
+            pytest.fail("API did not become healthy in time.")
+            
+        yield api_url
         
-    # finally:
-    #     # Stop services
-    #     print("Tearing down Docker services...")
-    #     subprocess.run(
-    #         ["docker-compose", "-f", docker_compose_path, "down"],
-    #         capture_output=True
-    #     )
+    finally:
+        # Stop services
+        print("Tearing down Docker services...")
+        subprocess.run(
+            ["docker-compose", "-f", docker_compose_path, "down"],
+            capture_output=True
+        )
 
 @pytest.fixture(scope="function")
 def db_collection(api_service):
