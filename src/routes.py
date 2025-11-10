@@ -20,7 +20,7 @@ api = APIBlueprint(
 
 
 @api.post('/', summary="Create a new trip")
-def create_trip(body: TripBody) -> str:
+def create_trip(body: TripBody) -> dict:
     """
     Creates a new trip based on the provided details.
     The server assigns a unique `trip_id`.
@@ -28,8 +28,8 @@ def create_trip(body: TripBody) -> str:
     manager: TripManager = current_app.config["trip_manager"]
     trip_id = manager.create_trip(Trip(**body.model_dump()))
     
-    # Return the full trip details, including the new ID
-    return trip_id
+    # Return the trip ID in a JSON object
+    return {"trip_id": trip_id}
 
 
 @api.get('/', summary="List all available trips")
@@ -64,7 +64,7 @@ def get_trip_by_id(path: TripIdPath) -> dict:
 
 
 @api.post('/<string:trip_id>/join', summary="Join a trip as a passenger")
-def join_trip(path: TripIdPath, body: JoinTripBody) -> str:
+def join_trip(path: TripIdPath, body: JoinTripBody) -> dict:
     """
     Allows a user to join a specific trip.
     
@@ -73,15 +73,15 @@ def join_trip(path: TripIdPath, body: JoinTripBody) -> str:
     manager: TripManager = current_app.config["trip_manager"]
     trip = manager.get_trip_by_id(path.trip_id)
     if not trip:
-        return "Trip not found", 404
+        return {"message": "Trip not found"}, 404
     added = manager.add_passenger_to_trip(path.trip_id, body.passenger_id)
     if not added:
-        return "Trip is full or passenger already joined", 400
-    return f"Successfully joined trip {path.trip_id}"
+        return {"message": "Trip is full or passenger already joined"}, 400
+    return {"message": f"Successfully joined trip {path.trip_id}"}
 
 
 @api.delete('/<string:trip_id>', summary="Delete a trip")
-def delete_trip(path: TripIdPath) -> str:
+def delete_trip(path: TripIdPath) -> dict:
     """
     Deletes a trip by its ID.
     
@@ -90,5 +90,5 @@ def delete_trip(path: TripIdPath) -> str:
     manager: TripManager = current_app.config["trip_manager"]
     deleted = manager.delete_trip(path.trip_id)
     if not deleted:
-        return "Trip not found", 404
-    return f"Trip {path.trip_id} deleted successfully."
+        return {"message": "Trip not found"}, 404
+    return {"message": f"Trip {path.trip_id} deleted successfully."}
