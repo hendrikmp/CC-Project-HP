@@ -1,9 +1,6 @@
 from flask_openapi3 import OpenAPI
 from src.routes import api as trip_api
 from flask import request
-from werkzeug.exceptions import HTTPException
-import logging
-import json
 
 import os
 from pymongo import MongoClient
