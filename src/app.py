@@ -1,13 +1,25 @@
 from flask_openapi3 import OpenAPI
 from src.routes import api as trip_api
+from flask import request
+from werkzeug.exceptions import HTTPException
+import logging
+import json
 
 import os
 from pymongo import MongoClient
 from src.trip_manager import TripManager
+from shared.logging_config import setup_logger, register_logging_handlers
+
+
+# Initialize a logger for the trips service
+app_logger = setup_logger('trips-ms')
 
 
 # Initialize Flask app with OpenAPI
 app = OpenAPI(__name__)
+
+# Register shared logging and error handlers
+register_logging_handlers(app, app_logger)
 
 # Register the blueprint from routes.py
 app.register_api(trip_api)
@@ -25,6 +37,7 @@ app.config["trip_manager"] = trip_manager
 def health_check():
     """Returns a 200 OK status to indicate the service is running."""
     return {"status": "ok"}, 200
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)

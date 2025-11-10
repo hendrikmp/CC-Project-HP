@@ -24,3 +24,8 @@ Dockerfile
 *.pot
 *.py[cod]
 .DS_Store
+
+# Logs
+logs/
+
+ToDos.md

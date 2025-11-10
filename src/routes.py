@@ -27,8 +27,6 @@ def create_trip(body: TripBody) -> dict:
     """
     manager: TripManager = current_app.config["trip_manager"]
     trip_id = manager.create_trip(Trip(**body.model_dump()))
-    
-    # Return the trip ID in a JSON object
     return {"trip_id": trip_id}
 
 
@@ -45,50 +43,39 @@ def get_all_trips(query: TripSearchQuery) -> List[dict]:
         destination=query.destination,
         trip_date=query.date,
     )
-    
-    # Convert Trip models to TripResponse models
     return [TripResponse(**trip.model_dump()).model_dump() for trip in all_trips]
 
 
-@api.get('/<string:trip_id>', summary="Get a specific trip by ID")
+@api.get('/<trip_id>', summary="Get a trip by ID")
 def get_trip_by_id(path: TripIdPath) -> dict:
     """
-    Returns the details of a single trip identified by its `trip_id`.
+    Returns the details of a specific trip by its ID.
     """
     manager: TripManager = current_app.config["trip_manager"]
     trip = manager.get_trip_by_id(path.trip_id)
     if trip:
         return TripResponse(**trip.model_dump()).model_dump()
-    # In a real app, you'd return a proper 404 error response
-    return ErrorResponse(message="Trip not found", code=404)
+    return {"message": "Trip not found"}, 404
 
 
-@api.post('/<string:trip_id>/join', summary="Join a trip as a passenger")
+@api.post('/<trip_id>/join', summary="Join a trip as a passenger")
 def join_trip(path: TripIdPath, body: JoinTripBody) -> dict:
     """
-    Allows a user to join a specific trip.
-    
-    Returns a success message on success, or an error message with appropriate status code.
+    Allows a passenger to join an existing trip.
     """
     manager: TripManager = current_app.config["trip_manager"]
-    trip = manager.get_trip_by_id(path.trip_id)
-    if not trip:
-        return {"message": "Trip not found"}, 404
-    added = manager.add_passenger_to_trip(path.trip_id, body.passenger_id)
-    if not added:
-        return {"message": "Trip is full or passenger already joined"}, 400
-    return {"message": f"Successfully joined trip {path.trip_id}"}
+    updated_trip = manager.add_passenger_to_trip(path.trip_id, body.passenger_id)
+    if updated_trip:
+        return TripResponse(**updated_trip.model_dump()).model_dump()
+    return {"message": "Trip not found or could not be updated"}, 404
 
 
-@api.delete('/<string:trip_id>', summary="Delete a trip")
+@api.delete('/<trip_id>', summary="Delete a trip")
 def delete_trip(path: TripIdPath) -> dict:
     """
     Deletes a trip by its ID.
-    
-    Returns a success message on success, or an error message with appropriate status code.
     """
     manager: TripManager = current_app.config["trip_manager"]
-    deleted = manager.delete_trip(path.trip_id)
-    if not deleted:
-        return {"message": "Trip not found"}, 404
-    return {"message": f"Trip {path.trip_id} deleted successfully."}
+    if manager.delete_trip(path.trip_id):
+        return {"message": "Trip deleted successfully"}
+    return {"message": "Trip not found"}, 404
