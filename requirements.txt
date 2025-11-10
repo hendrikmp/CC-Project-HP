@@ -1,4 +1,5 @@
 flask-openapi3
+flask-openapi3[swagger]
 pydantic
 pymongo
 pytest
