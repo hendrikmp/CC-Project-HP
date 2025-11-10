@@ -45,11 +45,10 @@ def api_service():
         yield api_url
         
     finally:
-        # Stop services
-        print("Tearing down Docker services...")
         subprocess.run(
-            ["docker-compose", "-f", docker_compose_path, "down"],
-            capture_output=True
+            ["docker", "compose", "-f", docker_compose_path, "down"],
+            capture_output=True,
+            check=False
         )
 
 @pytest.fixture(scope="function")
