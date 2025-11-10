@@ -21,7 +21,7 @@ def api_service():
     try:
         # Start services
         subprocess.run(
-            ["docker-compose", "-f", docker_compose_path, "up", "-d"],
+            ["docker", "compose", "-f", docker_compose_path, "up", "-d"],
             check=True,
             capture_output=True
         )
