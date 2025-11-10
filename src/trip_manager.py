@@ -28,7 +28,7 @@ class TripManager:
         if self.db_collection is not None:
             self.db_collection.create_index("trip_id", unique=True)
 
-    def create_trip(self, trip: Trip) -> Trip:
+    def create_trip(self, trip: Trip) -> str:
         """Create a new trip and store it in the database.
         
         Returns:
@@ -45,7 +45,7 @@ class TripManager:
         else:
             trip.trip_id = str(uuid4())
         
-        return trip
+        return trip.trip_id
 
     def get_all_trips(
         self,

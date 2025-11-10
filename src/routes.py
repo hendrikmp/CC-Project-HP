@@ -4,7 +4,7 @@ from typing import List
 
 from src.api_models import (
     TripBody, TripResponse, TripIdPath, TripSearchQuery,
-    SuccessResponse, ErrorResponse, JoinTripBody
+    ErrorResponse, JoinTripBody
 )
 from src.trip import Trip
 from src.trip_manager import TripManager
@@ -26,10 +26,10 @@ def create_trip(body: TripBody) -> str:
     The server assigns a unique `trip_id`.
     """
     manager: TripManager = current_app.config["trip_manager"]
-    new_trip = manager.create_trip(Trip(**body.model_dump()))
+    trip_id = manager.create_trip(Trip(**body.model_dump()))
     
     # Return the full trip details, including the new ID
-    return new_trip.trip_id
+    return trip_id
 
 
 @api.get('/', summary="List all available trips")

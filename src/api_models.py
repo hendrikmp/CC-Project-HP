@@ -50,3 +50,8 @@ class TripRequestResponse(TripRequestBody):
 class JoinTripBody(BaseModel):
     """Request body for joining a trip as a passenger."""
     passenger_id: str = Field(..., description="The ID of the passenger joining the trip.")
+
+class ErrorResponse(BaseModel):
+    """Generic error response model."""
+    code: int
+    message: str
