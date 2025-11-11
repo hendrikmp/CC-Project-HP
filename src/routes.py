@@ -66,7 +66,7 @@ def join_trip(path: TripIdPath, body: JoinTripBody) -> dict:
     manager: TripManager = current_app.config["trip_manager"]
     updated_trip = manager.add_passenger_to_trip(path.trip_id, body.passenger_id)
     if updated_trip:
-        return TripResponse(**updated_trip.model_dump()).model_dump()
+        return {"message": "Passenger added successfully"}
     return {"message": "Trip not found or could not be updated"}, 404
 
 
