@@ -70,3 +70,18 @@ def db_collection(api_service):
     # The database will be torn down with the container, but if we wanted
     # to clean up after each test, we could do it here.
     # collection.delete_many({})
+
+@pytest.fixture(scope="function")
+def trip_requests_collection(api_service):
+    """
+    Fixture to get a MongoDB collection for trip requests and clean it before each test.
+    """
+    mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/trips_db")
+    client = MongoClient(mongo_uri)
+    db = client.get_database()
+    collection = db.get_collection("trip_requests")
+    
+    # Clean the collection before the test
+    collection.delete_many({})
+    
+    yield collection

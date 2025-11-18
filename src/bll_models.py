@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, UTC
 from enum import Enum
 from typing import List, Optional
 
@@ -104,8 +104,8 @@ class TripRequest(BaseModel):
     latest_start_date: datetime
     status: TripRequestStatus = Field(default=TripRequestStatus.PENDING)
     trip_id: Optional[str] = Field(default=None)
-    created_at: datetime = Field(default_factory=datetime.now)
-    updated_at: datetime = Field(default_factory=datetime.now)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
     @model_validator(mode="after")
     def check_dates(self):
