@@ -5,6 +5,7 @@ from flask import request
 import os
 from pymongo import MongoClient
 from src.trip_manager import TripManager
+from src.trip_request_manager import TripRequestManager
 from shared.logging_config import setup_logger, register_logging_handlers
 
 
@@ -24,10 +25,16 @@ app.register_api(trip_api)
 # Initialize MongoDB client and inject into TripManager
 mongo_uri = os.getenv("MONGO_URI", "mongodb://trips-db:27017/trips_db")
 mongo_client = MongoClient(mongo_uri)
-db_collection = mongo_client.get_database().get_collection("trips")
+db = mongo_client.get_database()
 
-trip_manager = TripManager(db_collection=db_collection)
+trips_collection = db.get_collection("trips")
+trip_requests_collection = db.get_collection("trip_requests")
+
+trip_manager = TripManager(db_collection=trips_collection)
+trip_request_manager = TripRequestManager(db_collection=trip_requests_collection)
+
 app.config["trip_manager"] = trip_manager
+app.config["trip_request_manager"] = trip_request_manager
 
 # Define a basic health check route
 @app.get("/health", summary="Health Check")
