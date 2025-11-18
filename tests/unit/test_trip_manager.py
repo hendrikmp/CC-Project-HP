@@ -2,7 +2,7 @@ from datetime import datetime
 from pydantic import ValidationError
 import pytest
 
-from src.trip import Trip
+from src.bll_models import Trip
 from src.trip_manager import TripManager
 
 

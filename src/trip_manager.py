@@ -3,7 +3,7 @@ from datetime import datetime, date
 from uuid import uuid4
 from pymongo.collection import Collection
 from pymongo import MongoClient
-from src.trip import Trip
+from src.bll_models import Trip
 
 
 class TripManager:

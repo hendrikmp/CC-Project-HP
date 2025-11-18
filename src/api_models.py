@@ -1,6 +1,8 @@
 from datetime import datetime
 from typing import List, Optional
 from pydantic import BaseModel, Field
+from .bll_models import TripRequestStatus
+
 
 # --- Trip Models ---
 
@@ -36,14 +38,34 @@ class TripSearchQuery(BaseModel):
 
 class TripRequestBody(BaseModel):
     """Request body for creating a new trip request."""
-    user_id: str
+    passenger_id: str
     destination: str
-    earliest_start: datetime
-    latest_return: datetime
+    earliest_start_date: datetime
+    latest_start_date: datetime
 
-class TripRequestResponse(TripRequestBody):
-    """Response model for a trip request, including TripRequestBody + ID."""
+class TripRequestResponse(BaseModel):
+    """Response model for a single trip request."""
     request_id: str
+    passenger_id: str
+    destination: str
+    status: TripRequestStatus
+    trip_id: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
+
+class TripRequestUpdateBody(BaseModel):
+    """Request body for updating a trip request (e.g., accepting it)."""
+    trip_id: str
+    status: TripRequestStatus
+
+class RequestIdPath(BaseModel):
+    """Path parameter model for identifying a trip request."""
+    request_id: str = Field(..., description="The unique identifier of the trip request.")
+
+class TripRequestSearchQuery(BaseModel):
+    """Query parameters for searching trip requests."""
+    destination: Optional[str] = Field(None, description="Filter by destination.")
+
 
 # --- Generic Models ---
 

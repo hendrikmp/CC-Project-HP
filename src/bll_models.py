@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import Enum
 from typing import List, Optional
 
 from pydantic import BaseModel, Field, field_validator, model_validator
@@ -84,3 +85,29 @@ class Trip(BaseModel):
         """Re-run validation by rebuilding model (will raise on invalid state)."""
         # Pydantic v2: re-validate current state
         self.__class__.model_validate(self.model_dump())
+
+
+class TripRequestStatus(str, Enum):
+    """Enum for the status of a trip request."""
+
+    PENDING = "pending"
+    ACCEPTED = "accepted"
+
+
+class TripRequest(BaseModel):
+    """Pydantic-based TripRequest model."""
+
+    request_id: Optional[str] = Field(default=None)
+    passenger_id: str
+    destination: str
+    status: TripRequestStatus = TripRequestStatus.PENDING
+    trip_id: Optional[str] = Field(default=None)
+    created_at: datetime = Field(default_factory=datetime.now)
+    updated_at: datetime = Field(default_factory=datetime.now)
+
+    def to_dict(self) -> dict:
+        """Return a dictionary representation suitable for storage."""
+        data = self.model_dump()
+        # Convert enum to string for storage
+        data["status"] = self.status.value
+        return data

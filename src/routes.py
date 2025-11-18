@@ -6,7 +6,7 @@ from src.api_models import (
     TripBody, TripResponse, TripIdPath, TripSearchQuery,
     ErrorResponse, JoinTripBody
 )
-from src.trip import Trip
+from src.bll_models import Trip
 from src.trip_manager import TripManager
 
 # Define an API blueprint for trip-related routes

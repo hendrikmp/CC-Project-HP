@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 from datetime import datetime
-from src.trip import Trip
+from src.bll_models import Trip
 
 
 def test_create_valid_trip():

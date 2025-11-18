@@ -1,6 +1,6 @@
 import pytest
 from datetime import datetime
-from src.trip import Trip
+from src.bll_models import Trip
 from src.trip_manager import TripManager
 
 @pytest.fixture
