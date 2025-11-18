@@ -11,17 +11,19 @@ from src.bll_models import Trip, TripRequest
 from src.trip_manager import TripManager
 from src.trip_request_manager import TripRequestManager
 
+trips_tag = Tag(name='Trips', description='Operations related to trips')
+trip_requests_tag = Tag(name='Trip Requests', description='Operations related to trip requests')
+
 # Define an API blueprint for trip-related routes
 api = APIBlueprint(
     'trips',
     __name__,
     url_prefix='/trips',
-    abp_tags=[Tag(name='Trips', description='Operations related to trips'), Tag(name='Trip Requests', description='Operations related to trip requests')],
-    abp_responses={400: ErrorResponse, 404: ErrorResponse}
+    abp_tags=[trips_tag, trip_requests_tag]
 )
 
 
-@api.post('/', summary="Create a new trip", tags=['Trips'])
+@api.post('/', summary="Create a new trip", tags=[trips_tag])
 def create_trip(body: TripBody) -> dict:
     """
     Creates a new trip based on the provided details.
@@ -32,7 +34,7 @@ def create_trip(body: TripBody) -> dict:
     return {"trip_id": trip_id}
 
 
-@api.get('/', summary="List all available trips", tags=['Trips'])
+@api.get('/', summary="List all available trips", tags=[trips_tag])
 def get_all_trips(query: TripSearchQuery) -> List[dict]:
     """
     Returns a list of all available trips.
@@ -48,7 +50,7 @@ def get_all_trips(query: TripSearchQuery) -> List[dict]:
     return [TripResponse(**trip.model_dump()).model_dump() for trip in all_trips]
 
 
-@api.get('/<trip_id>', summary="Get a trip by ID", tags=['Trips'])
+@api.get('/<trip_id>', summary="Get a trip by ID", tags=[trips_tag])
 def get_trip_by_id(path: TripIdPath) -> dict:
     """
     Returns the details of a specific trip by its ID.
@@ -60,7 +62,7 @@ def get_trip_by_id(path: TripIdPath) -> dict:
     return {"message": "Trip not found"}, 404
 
 
-@api.post('/<trip_id>/join', summary="Join a trip as a passenger", tags=['Trips'])
+@api.post('/<trip_id>/join', summary="Join a trip as a passenger", tags=[trips_tag])
 def join_trip(path: TripIdPath, body: JoinTripBody) -> dict:
     """
     Allows a passenger to join an existing trip.
@@ -72,7 +74,7 @@ def join_trip(path: TripIdPath, body: JoinTripBody) -> dict:
     return {"message": "Trip not found or could not be updated"}, 404
 
 
-@api.delete('/<trip_id>', summary="Delete a trip", tags=['Trips'])
+@api.delete('/<trip_id>', summary="Delete a trip", tags=[trips_tag])
 def delete_trip(path: TripIdPath) -> dict:
     """
     Deletes a trip by its ID.
@@ -83,7 +85,7 @@ def delete_trip(path: TripIdPath) -> dict:
     return {"message": "Trip not found"}, 404
 
 
-@api.post('/requests', summary="Create a new trip request", tags=['Trip Requests'])
+@api.post('/requests', summary="Create a new trip request", tags=[trip_requests_tag])
 def create_trip_request(body: TripRequestBody) -> dict:
     """
     Creates a new trip request.
@@ -93,7 +95,7 @@ def create_trip_request(body: TripRequestBody) -> dict:
     return {"request_id": trip_request_id}
 
 
-@api.get('/requests', summary="List all trip requests", tags=['Trip Requests'])
+@api.get('/requests', summary="List all trip requests", tags=[trip_requests_tag])
 def get_all_trip_requests(query: TripRequestSearchQuery) -> List[dict]:
     """
     Returns a list of all trip requests.
@@ -104,7 +106,7 @@ def get_all_trip_requests(query: TripRequestSearchQuery) -> List[dict]:
     return [TripRequestResponse(**req.model_dump()).model_dump() for req in all_requests]
 
 
-@api.get('/requests/<request_id>', summary="Get a trip request by ID", tags=['Trip Requests'])
+@api.get('/requests/<request_id>', summary="Get a trip request by ID", tags=[trip_requests_tag])
 def get_trip_request_by_id(path: RequestIdPath) -> dict:
     """
     Returns the details of a specific trip request by its ID.
@@ -116,7 +118,7 @@ def get_trip_request_by_id(path: RequestIdPath) -> dict:
     return {"message": "Trip request not found"}, 404
 
 
-@api.put('/requests/<request_id>', summary="Update a trip request", tags=['Trip Requests'])
+@api.put('/requests/<request_id>', summary="Update a trip request", tags=[trip_requests_tag])
 def update_trip_request(path: RequestIdPath, body: TripRequestUpdateBody) -> dict:
     """
     Updates a trip request's status.
