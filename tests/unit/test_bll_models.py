@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
-from datetime import datetime
-from src.bll_models import Trip
+from datetime import datetime, timedelta, timezone
+from src.bll_models import Trip, TripRequest, TripRequestStatus
 
 
 def test_create_valid_trip():
@@ -209,3 +209,66 @@ def test_trip_to_dict():
     assert trip_dict["driver_id"] == "driver123"
     assert trip_dict["capacity"] == 3
     assert trip_dict["passengers"] == []
+
+
+def test_create_valid_trip_request():
+    """Test creating a trip request with valid data."""
+    now = datetime.now(timezone.utc)
+    trip_request = TripRequest(
+        passenger_id="pass123",
+        destination="Disneyland",
+        earliest_start_date=now + timedelta(days=1),
+        latest_start_date=now + timedelta(days=2),
+    )
+    assert trip_request.passenger_id == "pass123"
+    assert trip_request.destination == "Disneyland"
+    assert trip_request.status == TripRequestStatus.PENDING
+    assert trip_request.trip_id is None
+
+
+def test_trip_request_invalid_dates_raises_error():
+    """Test that latest_start_date before earliest_start_date raises an error."""
+    now = datetime.now(timezone.utc)
+    with pytest.raises(ValidationError, match="latest_start_date must be after earliest_start_date"):
+        TripRequest(
+            passenger_id="pass123",
+            destination="Disneyland",
+            earliest_start_date=now + timedelta(days=2),
+            latest_start_date=now + timedelta(days=1),
+        )
+
+
+def test_trip_request_same_dates_raises_error():
+    """Test that latest_start_date same as earliest_start_date raises an error."""
+    now = datetime.now(timezone.utc)
+    with pytest.raises(ValidationError, match="latest_start_date must be after earliest_start_date"):
+        TripRequest(
+            passenger_id="pass123",
+            destination="Disneyland",
+            earliest_start_date=now,
+            latest_start_date=now,
+        )
+
+
+def test_trip_request_to_dict():
+    """Test converting a trip request to a dictionary."""
+    now = datetime.now(timezone.utc)
+    trip_request = TripRequest(
+        request_id="req123",
+        passenger_id="pass123",
+        destination="Disneyland",
+        earliest_start_date=now + timedelta(days=1),
+        latest_start_date=now + timedelta(days=2),
+        status=TripRequestStatus.ACCEPTED,
+        trip_id="trip456"
+    )
+    
+    request_dict = trip_request.to_dict()
+    
+    assert request_dict["request_id"] == "req123"
+    assert request_dict["passenger_id"] == "pass123"
+    assert request_dict["destination"] == "Disneyland"
+    assert request_dict["status"] == "accepted"
+    assert request_dict["trip_id"] == "trip456"
+    assert isinstance(request_dict["created_at"], datetime)
+    assert isinstance(request_dict["updated_at"], datetime)

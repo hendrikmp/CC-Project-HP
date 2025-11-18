@@ -103,10 +103,15 @@ class TripRequest(BaseModel):
     earliest_start_date: datetime
     latest_start_date: datetime
     status: TripRequestStatus = Field(default=TripRequestStatus.PENDING)
-    status: TripRequestStatus = TripRequestStatus.PENDING
     trip_id: Optional[str] = Field(default=None)
     created_at: datetime = Field(default_factory=datetime.now)
     updated_at: datetime = Field(default_factory=datetime.now)
+
+    @model_validator(mode="after")
+    def check_dates(self):
+        if self.latest_start_date <= self.earliest_start_date:
+            raise ValueError("latest_start_date must be after earliest_start_date")
+        return self
 
     def to_dict(self) -> dict:
         """Return a dictionary representation suitable for storage."""

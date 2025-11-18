@@ -1,5 +1,5 @@
 from typing import List, Optional
-from datetime import datetime
+from datetime import datetime, UTC
 from uuid import uuid4
 from pymongo.collection import Collection
 from pymongo import MongoClient
@@ -45,6 +45,6 @@ class TripRequestManager:
         """Update a trip request's status and assign a trip_id."""
         result = self.trip_requests_collection.update_one(
             {"request_id": request_id},
-            {"$set": {"status": status, "trip_id": trip_id, "updated_at": datetime.utcnow()}}
+            {"$set": {"status": status, "trip_id": trip_id, "updated_at": datetime.now(UTC)}}
         )
         return result.modified_count > 0
