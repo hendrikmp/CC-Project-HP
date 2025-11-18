@@ -100,6 +100,9 @@ class TripRequest(BaseModel):
     request_id: Optional[str] = Field(default=None)
     passenger_id: str
     destination: str
+    earliest_start_date: datetime
+    latest_start_date: datetime
+    status: TripRequestStatus = Field(default=TripRequestStatus.PENDING)
     status: TripRequestStatus = TripRequestStatus.PENDING
     trip_id: Optional[str] = Field(default=None)
     created_at: datetime = Field(default_factory=datetime.now)
