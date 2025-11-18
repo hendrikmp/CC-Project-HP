@@ -4,17 +4,19 @@ from typing import List
 
 from src.api_models import (
     TripBody, TripResponse, TripIdPath, TripSearchQuery,
-    ErrorResponse, JoinTripBody
+    ErrorResponse, JoinTripBody, TripRequestBody, TripRequestResponse, 
+    TripRequestUpdateBody, RequestIdPath, TripRequestSearchQuery
 )
-from src.bll_models import Trip
+from src.bll_models import Trip, TripRequest
 from src.trip_manager import TripManager
+from src.trip_request_manager import TripRequestManager
 
 # Define an API blueprint for trip-related routes
 api = APIBlueprint(
     'trips',
     __name__,
     url_prefix='/trips',
-    abp_tags=[Tag(name='Trips', description='Operations related to trips')],
+    abp_tags=[Tag(name='Trips', description='Operations related to trips'), Tag(name='Trip Requests', description='Operations related to trip requests')],
     abp_responses={400: ErrorResponse, 404: ErrorResponse}
 )
 
@@ -79,3 +81,48 @@ def delete_trip(path: TripIdPath) -> dict:
     if manager.delete_trip(path.trip_id):
         return {"message": "Trip deleted successfully"}
     return {"message": "Trip not found"}, 404
+
+
+@api.post('/requests', summary="Create a new trip request")
+def create_trip_request(body: TripRequestBody) -> dict:
+    """
+    Creates a new trip request.
+    """
+    manager: TripRequestManager = current_app.config["trip_request_manager"]
+    trip_request_id = manager.create_trip_request(TripRequest(**body.model_dump()))
+    return {"request_id": trip_request_id}
+
+
+@api.get('/requests', summary="List all trip requests")
+def get_all_trip_requests(query: TripRequestSearchQuery) -> List[dict]:
+    """
+    Returns a list of all trip requests.
+    Supports optional filtering by destination.
+    """
+    manager: TripRequestManager = current_app.config["trip_request_manager"]
+    all_requests = manager.get_all_trip_requests(destination=query.destination)
+    return [TripRequestResponse(**req.model_dump()).model_dump() for req in all_requests]
+
+
+@api.get('/requests/<request_id>', summary="Get a trip request by ID")
+def get_trip_request_by_id(path: RequestIdPath) -> dict:
+    """
+    Returns the details of a specific trip request by its ID.
+    """
+    manager: TripRequestManager = current_app.config["trip_request_manager"]
+    trip_request = manager.get_trip_request_by_id(path.request_id)
+    if trip_request:
+        return TripRequestResponse(**trip_request.model_dump()).model_dump()
+    return {"message": "Trip request not found"}, 404
+
+
+@api.put('/requests/<request_id>', summary="Update a trip request")
+def update_trip_request(path: RequestIdPath, body: TripRequestUpdateBody) -> dict:
+    """
+    Updates a trip request's status.
+    """
+    manager: TripRequestManager = current_app.config["trip_request_manager"]
+    success = manager.update_trip_request(path.request_id, body.trip_id, body.status)
+    if success:
+        return {"message": "Trip request updated successfully"}
+    return {"message": "Trip request not found or could not be updated"}, 404
