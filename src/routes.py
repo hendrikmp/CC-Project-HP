@@ -21,7 +21,7 @@ api = APIBlueprint(
 )
 
 
-@api.post('/', summary="Create a new trip")
+@api.post('/', summary="Create a new trip", tags=['Trips'])
 def create_trip(body: TripBody) -> dict:
     """
     Creates a new trip based on the provided details.
@@ -32,7 +32,7 @@ def create_trip(body: TripBody) -> dict:
     return {"trip_id": trip_id}
 
 
-@api.get('/', summary="List all available trips")
+@api.get('/', summary="List all available trips", tags=['Trips'])
 def get_all_trips(query: TripSearchQuery) -> List[dict]:
     """
     Returns a list of all available trips.
@@ -48,7 +48,7 @@ def get_all_trips(query: TripSearchQuery) -> List[dict]:
     return [TripResponse(**trip.model_dump()).model_dump() for trip in all_trips]
 
 
-@api.get('/<trip_id>', summary="Get a trip by ID")
+@api.get('/<trip_id>', summary="Get a trip by ID", tags=['Trips'])
 def get_trip_by_id(path: TripIdPath) -> dict:
     """
     Returns the details of a specific trip by its ID.
@@ -60,7 +60,7 @@ def get_trip_by_id(path: TripIdPath) -> dict:
     return {"message": "Trip not found"}, 404
 
 
-@api.post('/<trip_id>/join', summary="Join a trip as a passenger")
+@api.post('/<trip_id>/join', summary="Join a trip as a passenger", tags=['Trips'])
 def join_trip(path: TripIdPath, body: JoinTripBody) -> dict:
     """
     Allows a passenger to join an existing trip.
@@ -72,7 +72,7 @@ def join_trip(path: TripIdPath, body: JoinTripBody) -> dict:
     return {"message": "Trip not found or could not be updated"}, 404
 
 
-@api.delete('/<trip_id>', summary="Delete a trip")
+@api.delete('/<trip_id>', summary="Delete a trip", tags=['Trips'])
 def delete_trip(path: TripIdPath) -> dict:
     """
     Deletes a trip by its ID.
@@ -83,7 +83,7 @@ def delete_trip(path: TripIdPath) -> dict:
     return {"message": "Trip not found"}, 404
 
 
-@api.post('/requests', summary="Create a new trip request")
+@api.post('/requests', summary="Create a new trip request", tags=['Trip Requests'])
 def create_trip_request(body: TripRequestBody) -> dict:
     """
     Creates a new trip request.
@@ -93,7 +93,7 @@ def create_trip_request(body: TripRequestBody) -> dict:
     return {"request_id": trip_request_id}
 
 
-@api.get('/requests', summary="List all trip requests")
+@api.get('/requests', summary="List all trip requests", tags=['Trip Requests'])
 def get_all_trip_requests(query: TripRequestSearchQuery) -> List[dict]:
     """
     Returns a list of all trip requests.
@@ -104,7 +104,7 @@ def get_all_trip_requests(query: TripRequestSearchQuery) -> List[dict]:
     return [TripRequestResponse(**req.model_dump()).model_dump() for req in all_requests]
 
 
-@api.get('/requests/<request_id>', summary="Get a trip request by ID")
+@api.get('/requests/<request_id>', summary="Get a trip request by ID", tags=['Trip Requests'])
 def get_trip_request_by_id(path: RequestIdPath) -> dict:
     """
     Returns the details of a specific trip request by its ID.
@@ -116,7 +116,7 @@ def get_trip_request_by_id(path: RequestIdPath) -> dict:
     return {"message": "Trip request not found"}, 404
 
 
-@api.put('/requests/<request_id>', summary="Update a trip request")
+@api.put('/requests/<request_id>', summary="Update a trip request", tags=['Trip Requests'])
 def update_trip_request(path: RequestIdPath, body: TripRequestUpdateBody) -> dict:
     """
     Updates a trip request's status.
