@@ -18,8 +18,7 @@ trip_requests_tag = Tag(name='Trip Requests', description='Operations related to
 api = APIBlueprint(
     'trips',
     __name__,
-    url_prefix='/trips',
-    abp_tags=[trips_tag, trip_requests_tag]
+    url_prefix='/trips'
 )
 
 
