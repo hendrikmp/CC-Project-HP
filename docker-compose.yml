@@ -1,11 +1,11 @@
 services:
   trips-microservice:
-    build: .
+    build: ./trips
     container_name: trips-microservice
     ports:
       - "5001:5001"
     volumes:
-      - .:/app # pushes changes to the container without the need to restart docker compose
+      - ./trips:/app # pushes changes to the container without the need to restart docker compose
     #  - ./logs:/app/logs
     environment:
       - FLASK_ENV=development
@@ -22,6 +22,19 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:5001
+    depends_on:
+      - trips-microservice
 
 volumes:
   mongo-data:
