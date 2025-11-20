@@ -81,14 +81,34 @@ site/
 # ------------------------------------------------------------------------------
 # Project-specific ignores
 # ------------------------------------------------------------------------------
-# Example cache folders under src/tests
-src/__pycache__/
-tests/__pycache__/
+# Backend (trips)
+trips/instance/
+trips/.pytest_cache/
+trips/coverage.xml
+trips/htmlcov/
 
 # ------------------------------------------------------------------------------
 # WSL / Ubuntu specific
 # ------------------------------------------------------------------------------
 *.lock
+
+# ------------------------------------------------------------------------------
+# Frontend (Next.js)
+# ------------------------------------------------------------------------------
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/coverage/
+frontend/.env*.local
+frontend/.vercel/
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+
 
 # Logs
 logs/
