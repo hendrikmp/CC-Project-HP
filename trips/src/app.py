@@ -1,4 +1,5 @@
 from flask_openapi3 import OpenAPI
+from flask_cors import CORS
 from src.routes import api as trip_api
 from flask import request
 
@@ -15,6 +16,7 @@ app_logger = setup_logger('trips-ms')
 
 # Initialize Flask app with OpenAPI
 app = OpenAPI(__name__)
+CORS(app)
 
 # Register shared logging and error handlers
 register_logging_handlers(app, app_logger)

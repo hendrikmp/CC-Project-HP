@@ -6,3 +6,4 @@ pytest
 pytest-mock
 flake8
 requests
+flask-cors
