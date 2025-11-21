@@ -1,9 +1,18 @@
 import { getTrips } from "@/lib/api";
-import { Search, Calendar, User } from "lucide-react";
+import { Calendar, User } from "lucide-react";
 import CreateTripButton from "@/components/CreateTripButton";
+import JoinTripButton from "@/components/JoinTripButton";
+import Search from "@/components/Search";
 
-export default async function TripsPage() {
-  const trips = await getTrips();
+export default async function TripsPage({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+  };
+}) {
+  const query = searchParams?.query || "";
+  const trips = await getTrips({ destination: query });
 
   return (
     <div className="flex flex-col gap-8">
@@ -15,14 +24,7 @@ export default async function TripsPage() {
         <CreateTripButton />
       </div>
 
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
-        <input
-          type="text"
-          placeholder="Search trips..."
-          className="w-full rounded-lg border border-surface-highlight bg-surface py-2 pl-10 pr-4 text-sm text-text placeholder:text-text-muted focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-        />
-      </div>
+      <Search placeholder="Search trips by destination..." />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {trips.length === 0 ? (
@@ -47,9 +49,16 @@ export default async function TripsPage() {
                   <Calendar size={14} />
                   <span>{new Date(trip.start_datetime).toLocaleDateString()}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <User size={14} />
-                  <span>{trip.driver_id} • {trip.passengers.length}/{trip.capacity} seats</span>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <User size={14} />
+                    <span>{trip.driver_id} • {trip.passengers.length}/{trip.capacity} seats</span>
+                  </div>
+                  <JoinTripButton 
+                    tripId={trip.trip_id} 
+                    currentPassengers={trip.passengers.length} 
+                    capacity={trip.capacity} 
+                  />
                 </div>
               </div>
             </div>

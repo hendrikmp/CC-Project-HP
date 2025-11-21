@@ -84,3 +84,12 @@ export async function createTripRequest(request: CreateTripRequestBody): Promise
   if (!res.ok) throw new Error('Failed to create trip request');
   return res.json();
 }
+
+export async function joinTrip(tripId: string, passengerId: string): Promise<void> {
+  const res = await fetch(`${API_URL}/trips/${tripId}/join`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ passenger_id: passengerId }),
+  });
+  if (!res.ok) throw new Error('Failed to join trip');
+}
