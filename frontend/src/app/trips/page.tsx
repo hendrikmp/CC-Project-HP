@@ -1,5 +1,6 @@
 import { getTrips } from "@/lib/api";
-import { Plus, Search, Calendar, User } from "lucide-react";
+import { Search, Calendar, User } from "lucide-react";
+import CreateTripButton from "@/components/CreateTripButton";
 
 export default async function TripsPage() {
   const trips = await getTrips();
@@ -11,10 +12,7 @@ export default async function TripsPage() {
           <h1 className="text-3xl font-bold tracking-tight text-text">Trips</h1>
           <p className="text-text-muted">Manage and view all available trips.</p>
         </div>
-        <button className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-background transition-transform hover:scale-105 active:scale-95">
-          <Plus size={16} />
-          New Trip
-        </button>
+        <CreateTripButton />
       </div>
 
       <div className="relative">

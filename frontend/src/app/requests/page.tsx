@@ -1,5 +1,6 @@
 import { getTripRequests } from "@/lib/api";
-import { Plus, Search, Calendar, User } from "lucide-react";
+import { Search, Calendar, User } from "lucide-react";
+import CreateRequestButton from "@/components/CreateRequestButton";
 
 export default async function RequestsPage() {
   const requests = await getTripRequests();
@@ -11,10 +12,7 @@ export default async function RequestsPage() {
           <h1 className="text-3xl font-bold tracking-tight text-text">Trip Requests</h1>
           <p className="text-text-muted">Manage and view all trip requests.</p>
         </div>
-        <button className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-background transition-transform hover:scale-105 active:scale-95">
-          <Plus size={16} />
-          New Request
-        </button>
+        <CreateRequestButton />
       </div>
 
       <div className="relative">
