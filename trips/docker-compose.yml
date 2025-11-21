@@ -1,0 +1,26 @@
+services:
+  trips-microservice:
+    build: .
+    container_name: trips-microservice
+    ports:
+      - "5001:5001"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development
+      - MONGO_URI=mongodb://trips-db:27017/trips_db
+    depends_on:
+      - trips-db
+
+  trips-db:
+    image: mongo:latest
+    container_name: trips-db
+    environment:
+      - MONGO_INITDB_DATABASE=trips_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
