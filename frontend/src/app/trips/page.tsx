@@ -1,6 +1,9 @@
-import { Plus, Search } from "lucide-react";
+import { getTrips } from "@/lib/api";
+import { Plus, Search, Calendar, User } from "lucide-react";
 
-export default function TripsPage() {
+export default async function TripsPage() {
+  const trips = await getTrips();
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex items-center justify-between">
@@ -23,8 +26,37 @@ export default function TripsPage() {
         />
       </div>
 
-      <div className="rounded-xl border border-surface-highlight bg-surface p-8 text-center">
-        <p className="text-text-muted">No trips found. Create one to get started.</p>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {trips.length === 0 ? (
+          <div className="col-span-full rounded-xl border border-surface-highlight bg-surface p-8 text-center">
+            <p className="text-text-muted">No trips found. Create one to get started.</p>
+          </div>
+        ) : (
+          trips.map((trip) => (
+            <div key={trip.trip_id} className="flex flex-col gap-4 rounded-xl border border-surface-highlight bg-surface p-6 transition-colors hover:border-primary/50">
+              <div className="flex items-start justify-between">
+                <div>
+                  <h3 className="font-semibold text-text">{trip.destination}</h3>
+                  <p className="text-sm text-text-muted">from {trip.pickup_location}</p>
+                </div>
+                <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+                  ${trip.cost_per_passenger}
+                </span>
+              </div>
+              
+              <div className="flex flex-col gap-2 text-sm text-text-muted">
+                <div className="flex items-center gap-2">
+                  <Calendar size={14} />
+                  <span>{new Date(trip.start_datetime).toLocaleDateString()}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <User size={14} />
+                  <span>{trip.driver_id} • {trip.passengers.length}/{trip.capacity} seats</span>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

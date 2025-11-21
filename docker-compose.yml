@@ -12,5 +12,6 @@ services:
       - /app/node_modules
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:5001
+      - INTERNAL_API_URL=http://trips-microservice:5001
     depends_on:
       - trips-microservice
