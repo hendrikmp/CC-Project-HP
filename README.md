@@ -61,7 +61,7 @@ BlaBlaTrip/
 1. Build and start the application:  
 
    ```bash
-   docker €compose up --build -d
+   docker compose up --build -d
    ```
 2. The application will be available at http://localhost:5001.  
 To verify the application is running, visit the health check endpoint: http://localhost:5001/health

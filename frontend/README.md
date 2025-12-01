@@ -9,7 +9,7 @@ This is the Next.js frontend for the BlaBlaTrip application.
 The easiest way to run the frontend is using Docker Compose from the root directory:
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 The frontend will be available at [http://localhost:3000](http://localhost:3000).
