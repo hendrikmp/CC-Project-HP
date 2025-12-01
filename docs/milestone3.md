@@ -97,7 +97,7 @@ The **Trips Microservice** exposes the following API endpoints:
 These endpoints cover the core functionalities for creating, retrieving, joining, and deleting trips.  
 Endpoints for creating and retrieving **trip requests** have not yet been implemented due to time constraints and are scheduled for **Milestone #4**.
 
-For detailed specifications, the **automatically generated OpenAPI documentation** can be accessed through the browser once the application is running (see [../README.md](README.md)).  
+For detailed specifications, the **automatically generated OpenAPI documentation** can be accessed through the browser once the application is running (see [README.md](../README.md)).  
 This convenient feature is provided by **flask-openapi3**.
 
 All API endpoints include alternate response and error handling where appropriate — for example, returning `"404 – Not Found"` instead of `"200 – OK"` when an entry is missing.
