@@ -14,7 +14,6 @@ services:
         sync: false               # "sync: false" means you enter it in the dashboard, not here.
 
   # --- Frontend Service ---
-  # --- Frontend Service ---
   - type: web
     name: frontend-microservice
     runtime: docker

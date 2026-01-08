@@ -27,7 +27,7 @@ app.register_api(trip_api)
 # Initialize MongoDB client and inject into TripManager
 mongo_uri = os.getenv("MONGO_URI", "mongodb://trips-db:27017/trips_db")
 mongo_client = MongoClient(mongo_uri)
-db = mongo_client.get_database()
+db = mongo_client.get_database("trips_db")
 
 trips_collection = db.get_collection("trips")
 trip_requests_collection = db.get_collection("trip_requests")
