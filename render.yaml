@@ -5,7 +5,8 @@ services:
     runtime: docker
     region: frankfurt  
     plan: free
-    dockerContext: ./trips   
+    dockerfilePath: ./trips/Dockerfile
+    dockerContext: ./trips
     envVars:
       - key: PORT
         value: 5003
@@ -19,8 +20,8 @@ services:
     runtime: docker
     region: frankfurt
     plan: free
-    dockerContext: .
     dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
     envVars:
       - key: NEXT_PUBLIC_API_URL
         fromService:
