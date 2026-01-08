@@ -13,19 +13,27 @@ services:
         sync: false               # "sync: false" means you enter it in the dashboard, not here.
 
   # --- Frontend Service ---
+  # --- Frontend Service ---
   - type: web
-    name: frontend-microservice
+    name: trips-frontend
     runtime: docker
     region: frankfurt
     plan: free
-    dockerContext: ./frontend  
+    
+    # 1. Context matches the FOLDER name (not the file)
+    dockerContext: ./frontend
+    
+    # 2. Path is just the filename (relative to the context above)
+    # Since we are already inside './frontend', we just look for 'Dockerfile'
+    dockerfilePath: Dockerfile
+    
     envVars:
       - key: NEXT_PUBLIC_API_URL
         fromService:
           type: web
           name: trips-microservice
           envVarKey: RENDER_EXTERNAL_URL
-      - key: INTERNAL_API_URL 
+      - key: INTERNAL_API_URL
         fromService:
           type: web
           name: trips-microservice
