@@ -15,7 +15,7 @@ services:
   # --- Frontend Service ---
   # --- Frontend Service ---
   - type: web
-    name: trips-frontend
+    name: frontend-microservice
     runtime: docker
     region: frankfurt
     plan: free
