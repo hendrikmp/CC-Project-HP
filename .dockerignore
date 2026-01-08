@@ -29,3 +29,12 @@ Dockerfile
 logs/
 
 ToDos.md
+
+# Node
+# .dockerignore
+**/node_modules
+**/.next
+**/npm-debug.log
+**/build
+**/dist
+.git
