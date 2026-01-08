@@ -18,7 +18,7 @@ services:
     runtime: docker
     region: frankfurt
     plan: free
-    dockerContext: ./frontend  
+    dockerContext: ./frontend/Dockerfile  
     envVars:
       - key: NEXT_PUBLIC_API_URL
         fromService:
