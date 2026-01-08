@@ -19,14 +19,8 @@ services:
     runtime: docker
     region: frankfurt
     plan: free
-    
-    # 1. Context matches the FOLDER name (not the file)
-    dockerContext: ./frontend
-    
-    # 2. Path is just the filename (relative to the context above)
-    # Since we are already inside './frontend', we just look for 'Dockerfile'
-    dockerfilePath: Dockerfile
-    
+    dockerContext: .
+    dockerfilePath: ./frontend/Dockerfile
     envVars:
       - key: NEXT_PUBLIC_API_URL
         fromService:
