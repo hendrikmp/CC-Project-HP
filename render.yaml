@@ -1,0 +1,31 @@
+services:
+  # --- Trips Service ---
+  - type: web
+    name: trips-microservice
+    runtime: docker
+    region: frankfurt  
+    plan: free
+    dockerContext: ./trips   
+    envVars:
+      - key: PORT
+        value: 5003
+      - key: MONGO_URI
+        sync: false               # "sync: false" means you enter it in the dashboard, not here.
+
+  # --- Frontend Service ---
+  - type: web
+    name: frontend-microservice
+    runtime: docker
+    region: frankfurt
+    plan: free
+    dockerContext: ./frontend  
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: trips-microservice     # Automatically links to the backend URL
+      - key: INTERNAL_API_URL 
+        fromService:
+          type: web
+          name: trips-microservice
+          property: url

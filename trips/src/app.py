@@ -46,4 +46,11 @@ def health_check():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    # Get PORT from Render (default to 5001 if local)
+    port = int(os.environ.get("PORT", 5001))
+    
+    # Get DEBUG mode (False in production for security)
+    debug = os.environ.get("FLASK_ENV") != "production"
+
+    # host='0.0.0.0' allows external access
+    app.run(host='0.0.0.0', port=port, debug=debug)
