@@ -1,6 +1,8 @@
 services:
   trips-microservice:
-    build: .
+    build:
+      context: .              # <--- CHANGE THIS (Was ./trips)
+      dockerfile: trips/Dockerfile
     container_name: trips-microservice
     ports:
       - "5001:5001"

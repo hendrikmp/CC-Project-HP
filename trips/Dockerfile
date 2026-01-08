@@ -5,13 +5,13 @@ FROM python:3.12-slim
 WORKDIR /app
 
 # Copy the requirements file into the container at /app
-COPY requirements.txt .
+COPY trips/requirements.txt .
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application's code into the container at /app
-COPY . .
+COPY trips/. .
 
 # Make port 5001 available to the world outside this container
 EXPOSE 5001
