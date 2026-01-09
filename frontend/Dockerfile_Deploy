@@ -5,6 +5,12 @@
 FROM node:24-alpine AS builder
 WORKDIR /app
 
+# Define Argument (Open the window)
+ARG NEXT_PUBLIC_API_URL
+
+# Set it as an Environment Variable for the build command
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
 # Copy package files first (better caching)
 COPY package*.json ./
 RUN npm install
