@@ -4,10 +4,24 @@ from src.routes import api as trip_api
 from flask import request
 
 import os
+import sentry_sdk
 from pymongo import MongoClient
 from src.trip_manager import TripManager
 from src.trip_request_manager import TripRequestManager
 from shared.logging_config import setup_logger, register_logging_handlers
+
+# Initialize Sentry for error tracking and performance monitoring
+sentry_sdk.init(
+    dsn="https://20baf1054278cb308fa5d05f65d527a2@o4510682372964352.ingest.de.sentry.io/4510682377420880",
+    # Add data like request headers and IP for users,
+    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+    send_default_pii=True,
+    # Enable sending logs to Sentry
+    enable_logs=True,
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for tracing.
+    traces_sample_rate=1.0,
+)
 
 
 # Initialize a logger for the trips service
@@ -43,6 +57,11 @@ app.config["trip_request_manager"] = trip_request_manager
 def health_check():
     """Returns a 200 OK status to indicate the service is running."""
     return {"status": "ok"}, 200
+
+@app.route('/debug-sentry')
+def trigger_error():
+    1 / 0
+    return "This will never run"
 
 
 if __name__ == "__main__":
