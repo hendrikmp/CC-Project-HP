@@ -25,7 +25,7 @@ ENV NODE_ENV=production
 ENV PORT=3000
 
 # 1. Copy the "public" folder (images, favicon, etc.)
-COPY --from=builder /app/public ./public
+# COPY --from=builder /app/public ./public
 
 # 2. Copy the "standalone" folder (This is your actual server)
 # It includes the minimal necessary node_modules
