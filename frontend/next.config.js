@@ -7,6 +7,9 @@ const nextConfig = {
   images: {
     unoptimized: true, 
   },
+  
+  // 3. Enable standalone output for smaller builds
+  output: 'standalone',
 };
 
 module.exports = nextConfig;
