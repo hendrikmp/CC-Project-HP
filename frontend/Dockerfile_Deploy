@@ -22,20 +22,20 @@ FROM node:24-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
+
+# 1. CRITICAL: Force the server to listen on 0.0.0.0
+# Without this, it defaults to localhost and Render gets a 502
+ENV HOSTNAME="0.0.0.0"
+
+# 2. Let Render set the PORT, but default to 3000 if missing
+# Note: Render automatically injects a PORT env var (usually 10000)
 ENV PORT=3000
 
-# 1. Copy the "public" folder (images, favicon, etc.)
 # COPY --from=builder /app/public ./public
-
-# 2. Copy the "standalone" folder (This is your actual server)
-# It includes the minimal necessary node_modules
 COPY --from=builder /app/.next/standalone ./
-
-# 3. Copy static assets (CSS, JS chunks)
-# Standalone mode doesn't bundle these, so we copy them manually
 COPY --from=builder /app/.next/static ./.next/static
 
+# Exposed port must match the fallback
 EXPOSE 3000
 
-# Start the server directly (No "npm start" needed)
 CMD ["node", "server.js"]
