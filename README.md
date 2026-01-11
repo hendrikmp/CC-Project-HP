@@ -11,6 +11,12 @@ Course: Cloud Computing: Fundamentos e Infraestructuras - 25/26
 
 Users will be able to search and request trips, post their own ones, and rate drivers as well as passengers they shared a trip with.
 
+## Access Deployed Application
+
+URL: https://frontend-microservice-vz52.onrender.com
+
+Note: When accesing the application the first time, it may take 1-2 minutes to start up, as the chosen cloud provider shuts down services automatically after 15 Minutes without use.
+
 ## Project Milestones / Documentation
 
 The links of the project milestones and their respective documentation can be accessed below:
@@ -23,36 +29,11 @@ The links of the project milestones and their respective documentation can be ac
 
 ### [Milestone 4 – Service Composition](docs/milestone4.md)
 
-## Repository Structure
-```
-BlaBlaTrip/
-├── .github/
-|   └── workflows
-|       └── python-app.yml
-├── docs/
-|   ├── milestone1.md
-|   └── ...
-├── logs/
-├── shared/
-|   └── Shared Logging Configuration
-├── src/
-|   ├── Business Logic / API / Application Layer ..
-|   └── ...
-├── tests/
-|   ├── integration/ ...
-|   └── unit/ ...
-├── .dockerignore
-├── .gitignore
-├── docker-compose.yml
-├── Dockerfile
-├── LICENSE
-├── Makefile
-├── README.md
-└── requirements.txt
-```
+### [Milestone 5 – Application Deployment on an IaaS or PaaS](docs/milestone5.md)
 
 
-## How to Run the Application
+
+## How to Run the Application Locally
 
 ### Prerequisites
 - **Docker** and **Docker Compose** installed on your system.
