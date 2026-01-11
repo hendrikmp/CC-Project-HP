@@ -22,4 +22,6 @@ ENV FLASK_APP=src/app.py
 # Run app.py when the container launches
 # CMD ["flask", "run", "--host=0.0.0.0", "--port=5001", "--reload"]
 # CMD ["python", "src/app.py"]
-CMD ["python", "-m", "src.app"]
+# CMD ["python", "-m", "src.app"]
+# CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5001", "app:app"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5001", "src.app:app"]

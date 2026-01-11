@@ -8,3 +8,4 @@ flake8
 requests
 flask-cors
 sentry-sdk[flask]
+gunicorn

@@ -5,7 +5,7 @@
 FROM node:24-alpine AS builder
 WORKDIR /app
 
-# Define Argument (Open the window)
+# Define Argument 
 ARG NEXT_PUBLIC_API_URL
 
 # Set it as an Environment Variable for the build command
