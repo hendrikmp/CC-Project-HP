@@ -11,7 +11,7 @@ services:
       - key: PORT
         value: 5003
       - key: MONGO_URI
-        sync: false               # "sync: false" means you enter it in the dashboard, not here.
+        sync: false             
 
   # --- Frontend Service ---
   - type: web
