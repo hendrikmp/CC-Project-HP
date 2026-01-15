@@ -9,7 +9,7 @@ services:
     dockerContext: ./trips
     envVars:
       - key: PORT
-        value: 5003
+        value: 5001
       - key: MONGO_URI
         sync: false             
 

@@ -41,11 +41,9 @@ export interface CreateTripRequestBody {
   latest_start_date: string;
 }
 
-//const API_URL = typeof window === 'undefined' 
-//  ? (process.env.INTERNAL_API_URL || 'http://trips-microservice:5001') 
-//  : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001');
-
-const API_URL = 'https://trips-microservice.onrender.com'
+const API_URL = typeof window === 'undefined' 
+  ? (process.env.INTERNAL_API_URL || 'http://trips-microservice:5001') 
+  : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001');
 
 export async function getTrips(query?: { pickup?: string; destination?: string; date?: string }): Promise<Trip[]> {
   const params = new URLSearchParams();
