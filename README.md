@@ -15,8 +15,10 @@ Users will be able to search and request trips, post their own ones, and rate dr
 
 URL: https://frontend-microservice-vz52.onrender.com
 
-Note: When accesing the application the first time, it may take 1-2 minutes to start up, as the chosen cloud provider shuts down services automatically after 15 Minutes without use.
-
+IMPORTANT
+- When accessing the application for the first time, it may take 1–2 minutes to start because the choosen cloud provider automatically shuts services down after 15 minutes of inactivity.
+- At the moment, opening the frontend does not automatically wake up the backend service. Please start the backend manually by visiting this URL in your browser: https://trips-microservice.onrender.com
+. The startup process there will also take about 1–2 minutes.
 ## Project Milestones / Documentation
 
 The links of the project milestones and their respective documentation can be accessed below:
