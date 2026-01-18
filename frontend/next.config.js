@@ -9,7 +9,7 @@ const nextConfig = {
   },
   
   // 3. Enable standalone output for smaller builds
-  output: 'standalone',
+  output: 'standalone'
 };
 
 module.exports = nextConfig;

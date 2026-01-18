@@ -48,6 +48,8 @@ class TripRequestResponse(BaseModel):
     request_id: str
     passenger_id: str
     destination: str
+    earliest_start_date: datetime
+    latest_start_date: datetime
     status: TripRequestStatus
     trip_id: Optional[str] = None
     created_at: datetime
